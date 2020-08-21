@@ -1,12 +1,11 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
-import AppError from './errors/AppError';
+import uploadConfig from '@config/upload';
+import AppError from '@shared/errors/AppError';
 import routes from './routes';
 
-import uploadConfig from './config/upload';
-
-import './database';
+import '@shared/infra/typeorm';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +19,8 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
       message: err.message,
     });
   }
+
+  console.error(err.message);
 
   // generic error
   return response.status(500).json({

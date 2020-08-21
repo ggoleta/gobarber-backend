@@ -24,8 +24,22 @@
   ],
   "rules": {
     "class-methods-use-this": "off",
+    "no-useless-constructor": "off",
     "prettier/prettier": "error",
     "camelcase": "off",
+    // "@typescript-eslint/naming-convention": [
+    //   "error",
+    //   {
+    //     "selector": "interface",
+    //     "format": [
+    //       "PascalCase"
+    //     ],
+    //     "custom": {
+    //       "regex": "^I[A-Z]",
+    //       "match": true
+    //     }
+    //   }
+    // ],
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
