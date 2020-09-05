@@ -19,6 +19,7 @@ class UsersRepository implements IUsersRepository {
     const user = await this.ormRepository.findOne({
       where: { email },
     });
+
     return user;
   }
 
