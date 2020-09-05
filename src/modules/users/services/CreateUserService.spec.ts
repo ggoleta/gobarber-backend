@@ -1,18 +1,19 @@
-import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import CreateUsersService from './CreateUsersService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
-describe('CreateUser', () => {
-  it('should be albe to create a new user', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const createUser = new CreateUsersService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
+let fakeUserRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUsersService;
 
+describe('CreateUser', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUsersService(fakeUserRepository, fakeHashProvider);
+  });
+  it('should be albe to create a new user', async () => {
     const user = await createUser.execute({
       name: 'Rogério',
       email: 'rogerio@gmail.com',
@@ -24,26 +25,18 @@ describe('CreateUser', () => {
   });
 
   it('should not be albe to create a new user with email that already exists', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const createUser = new CreateUsersService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await createUser.execute({
       name: 'Rogério',
       email: 'rogerio@gmail.com',
       password: '123456',
     });
 
-    expect(
+    await expect(
       createUser.execute({
         name: 'Rogério',
         email: 'rogerio@gmail.com',
         password: '123456',
       }),
     ).rejects.toBeInstanceOf(AppError);
-    // expect(user.password).toBe('123456');
   });
 });
